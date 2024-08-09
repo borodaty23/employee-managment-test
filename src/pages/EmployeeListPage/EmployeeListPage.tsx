@@ -9,7 +9,7 @@ import { RootState } from "@/app/store";
 import EmployeeList from "@/features/EmployeeList/EmployeeList";
 import FilterForm from "@/features/FilterForm/FilterForm";
 import styles from "./EmployeeListPage.module.scss";
-import employeesData from "@/employees.json"; // Импортируйте JSON-файл напрямую
+import employeesData from "@/employees.json";
 
 const EmployeeListPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,18 +17,18 @@ const EmployeeListPage: React.FC = () => {
     (state: RootState) => state.employees
   );
 
-  console.log(1111, employees);
+  console.log(filteredEmployees);
 
   useEffect(() => {
     if (!employees.length) {
       dispatch(loadEmployees(employeesData));
     }
-  }, []);
+  }, [dispatch, employees.length]);
 
   useEffect(() => {
     const updated = selectFilteredEmployees(employees, filter);
     dispatch(setFilteredEmployees(updated));
-  }, [employees, filter]);
+  }, [employees, filter, dispatch]);
 
   return (
     <main className={styles.container}>

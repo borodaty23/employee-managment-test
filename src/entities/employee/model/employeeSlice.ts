@@ -12,9 +12,11 @@ export interface Employee {
 interface Filter {
   role?: string;
   isArchive?: boolean;
+  sortType?: "name" | "birthday";
+  sortOrder?: "asc" | "desc";
 }
 
-interface EmployeeState {
+export interface EmployeeState {
   employees: Employee[];
   filteredEmployees: Employee[];
   filter: Filter;
@@ -23,7 +25,12 @@ interface EmployeeState {
 const initialState: EmployeeState = {
   employees: [],
   filteredEmployees: [],
-  filter: { role: "", isArchive: false },
+  filter: {
+    role: "",
+    isArchive: false,
+    sortType: "name", // Добавляем значение по умолчанию
+    sortOrder: "asc", // Добавляем значение по умолчанию
+  },
 };
 
 const employeeSlice = createSlice({
@@ -44,12 +51,11 @@ const employeeSlice = createSlice({
         (emp) => emp.id === action.payload.id
       );
       if (index !== -1) {
-        console.log(44, action.payload);
         state.employees[index] = action.payload;
       }
     },
     setFilter(state, action: PayloadAction<Filter>) {
-      state.filter = action.payload;
+      state.filter = { ...state.filter, ...action.payload };
     },
   },
 });
@@ -66,12 +72,32 @@ export const selectFilteredEmployees = (
   employees: Employee[],
   filter: Filter
 ) => {
-  return employees.filter((emp) => {
+  const filtered = employees.filter((emp) => {
     return (
       (!filter.role || emp.role === filter.role) &&
       (filter.isArchive === undefined || emp.isArchive === filter.isArchive)
     );
   });
+
+  return filtered.sort((a, b) => {
+    let comparison = 0;
+
+    if (filter.sortType === "name") {
+      comparison = a.name.localeCompare(b.name);
+    } else if (filter.sortType === "birthday") {
+      const dateA = parseDate(a.birthday).getTime();
+      const dateB = parseDate(b.birthday).getTime();
+      comparison = dateA - dateB;
+    }
+
+    return filter.sortOrder === "asc" ? comparison : -comparison;
+  });
 };
+
+// Функция для преобразования строки в дату
+function parseDate(dateString: string): Date {
+  const [day, month, year] = dateString.split(".").map(Number);
+  return new Date(year, month - 1, day);
+}
 
 export default employeeSlice.reducer;
