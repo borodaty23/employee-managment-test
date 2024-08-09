@@ -16,11 +16,13 @@ interface Filter {
 
 interface EmployeeState {
   employees: Employee[];
+  filteredEmployees: Employee[];
   filter: Filter;
 }
 
 const initialState: EmployeeState = {
   employees: [],
+  filteredEmployees: [],
   filter: { role: "", isArchive: false },
 };
 
@@ -31,6 +33,9 @@ const employeeSlice = createSlice({
     loadEmployees(state, action: PayloadAction<Employee[]>) {
       state.employees = action.payload;
     },
+    setFilteredEmployees(state, action: PayloadAction<Employee[]>) {
+      state.filteredEmployees = action.payload;
+    },
     addEmployee(state, action: PayloadAction<Employee>) {
       state.employees.push(action.payload);
     },
@@ -39,6 +44,7 @@ const employeeSlice = createSlice({
         (emp) => emp.id === action.payload.id
       );
       if (index !== -1) {
+        console.log(44, action.payload);
         state.employees[index] = action.payload;
       }
     },
@@ -48,8 +54,13 @@ const employeeSlice = createSlice({
   },
 });
 
-export const { loadEmployees, addEmployee, updateEmployee, setFilter } =
-  employeeSlice.actions;
+export const {
+  loadEmployees,
+  addEmployee,
+  updateEmployee,
+  setFilter,
+  setFilteredEmployees,
+} = employeeSlice.actions;
 
 export const selectFilteredEmployees = (
   employees: Employee[],

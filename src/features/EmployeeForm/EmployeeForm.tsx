@@ -18,6 +18,9 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ employeeId }) => {
   const employee = useSelector((state: RootState) =>
     state.employees.employees.find((emp) => emp.id === employeeId)
   );
+  const { employees } = useSelector((state: RootState) => state.employees);
+
+  console.log(777, employees);
 
   const [name, setName] = useState(employee?.name || "");
   const [phone, setPhone] = useState(employee?.phone || "");
@@ -48,11 +51,12 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ employeeId }) => {
 
     if (employeeId) {
       dispatch(updateEmployee(newEmployee));
+      console.log(3, newEmployee);
     } else {
       dispatch(addEmployee(newEmployee));
     }
 
-    navigate("/"); // Navigate to the employee list page
+    navigate("/");
   };
 
   return (
