@@ -1,0 +1,23 @@
+.container {
+    padding: 16px;
+    background: #f4f4f4;
+    min-height: 100vh;
+}
+
+.title {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    color: #333;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #333;
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 32px;
+    }
+}
