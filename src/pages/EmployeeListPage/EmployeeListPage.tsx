@@ -5,19 +5,16 @@ import {
   selectFilteredEmployees,
   setFilteredEmployees,
 } from "@/entities/employee/model/employeeSlice";
-import { RootState } from "@/app/store";
 import EmployeeList from "@/features/EmployeeList/EmployeeList";
 import FilterForm from "@/features/FilterForm/FilterForm";
 import styles from "./EmployeeListPage.module.scss";
 import employeesData from "@/employees.json";
+import { selectEmployeeState } from "@/entities/employee/model/selectors";
 
 const EmployeeListPage: React.FC = () => {
   const dispatch = useDispatch();
-  const { employees, filter, filteredEmployees } = useSelector(
-    (state: RootState) => state.employees
-  );
-
-  console.log(filteredEmployees);
+  const { employees, filter, filteredEmployees } =
+    useSelector(selectEmployeeState);
 
   useEffect(() => {
     if (!employees.length) {

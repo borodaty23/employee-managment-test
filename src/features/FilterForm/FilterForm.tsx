@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "@/entities/employee/model/employeeSlice";
 import { RootState } from "@/app/store";
 import styles from "./FilterForm.module.scss";
+import { selectEmployeeState } from "@/entities/employee/model/selectors";
 
 const FilterForm: React.FC = () => {
   const dispatch = useDispatch();
-  const { role, isArchive, sortType, sortOrder } = useSelector(
-    (state: RootState) => state.employees.filter
-  );
+  const {
+    filter: { role, isArchive, sortType, sortOrder },
+  } = useSelector((state: RootState) => selectEmployeeState(state));
 
   console.log(1, sortOrder);
 

@@ -8,6 +8,7 @@ import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 import styles from "./EmployeeForm.module.scss";
 import { toast } from "react-toastify";
+import { selectEmployeeState } from "@/entities/employee/model/selectors";
 
 interface EmployeeFormProps {
   employeeId?: number;
@@ -16,33 +17,31 @@ interface EmployeeFormProps {
 const EmployeeForm: React.FC<EmployeeFormProps> = ({ employeeId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const employee = useSelector((state: RootState) =>
-    state.employees.employees.find((emp) => emp.id === employeeId)
+  const { employees } = useSelector((state: RootState) =>
+    selectEmployeeState(state)
   );
-  const { employees } = useSelector((state: RootState) => state.employees);
 
-  console.log(777, employees);
+  const employee = employees.find((emp) => emp.id === employeeId);
 
   const [name, setName] = useState(employee?.name || "");
   const [phone, setPhone] = useState(employee?.phone || "");
   const [birthdate, setBirthdate] = useState(employee?.birthday || "");
   const [role, setRole] = useState(employee?.role || "cook");
   const [isArchive, setIsArchive] = useState(employee?.isArchive || false);
-  console.log(111, birthdate);
 
-  const formatDateToInput = (dateString: string) => {
-    const [day, month, year] = dateString.split(".").map(Number);
-    return `${year}-${month.toString().padStart(2, "0")}-${day
-      .toString()
-      .padStart(2, "0")}`;
-  };
+  // const formatDateToInput = (dateString: string) => {
+  //   const [day, month, year] = dateString.split(".").map(Number);
+  //   return `${year}-${month.toString().padStart(2, "0")}-${day
+  //     .toString()
+  //     .padStart(2, "0")}`;
+  // };
 
-  const parseDateFromInput = (dateString: string) => {
-    const [year, month, day] = dateString.split("-").map(Number);
-    return `${day.toString().padStart(2, "0")}.${month
-      .toString()
-      .padStart(2, "0")}.${year}`;
-  };
+  // const parseDateFromInput = (dateString: string) => {
+  //   const [year, month, day] = dateString.split("-").map(Number);
+  //   return `${day.toString().padStart(2, "0")}.${month
+  //     .toString()
+  //     .padStart(2, "0")}.${year}`;
+  // };
 
   useEffect(() => {
     if (employee) {

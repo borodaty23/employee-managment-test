@@ -9,7 +9,7 @@ const EditEmployeePage: React.FC = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Редактировать сотрудника</h1>
-      <EmployeeForm employeeId={parseInt(id)} />
+      <EmployeeForm employeeId={id ? parseInt(id) : undefined} />
     </div>
   );
 };
