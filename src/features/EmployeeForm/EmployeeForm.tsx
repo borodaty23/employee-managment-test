@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import InputMask from "react-input-mask";
 import {
   addEmployee,
   updateEmployee,
@@ -22,26 +23,13 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ employeeId }) => {
   );
 
   const employee = employees.find((emp) => emp.id === employeeId);
-
   const [name, setName] = useState(employee?.name || "");
   const [phone, setPhone] = useState(employee?.phone || "");
   const [birthdate, setBirthdate] = useState(employee?.birthday || "");
   const [role, setRole] = useState(employee?.role || "cook");
   const [isArchive, setIsArchive] = useState(employee?.isArchive || false);
-
-  // const formatDateToInput = (dateString: string) => {
-  //   const [day, month, year] = dateString.split(".").map(Number);
-  //   return `${year}-${month.toString().padStart(2, "0")}-${day
-  //     .toString()
-  //     .padStart(2, "0")}`;
-  // };
-
-  // const parseDateFromInput = (dateString: string) => {
-  //   const [year, month, day] = dateString.split("-").map(Number);
-  //   return `${day.toString().padStart(2, "0")}.${month
-  //     .toString()
-  //     .padStart(2, "0")}.${year}`;
-  // };
+  const [phoneError, setPhoneError] = useState("");
+  const [nameError, setNameError] = useState("");
 
   useEffect(() => {
     if (employee) {
@@ -55,6 +43,20 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ employeeId }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const phonePattern = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+    if (!phonePattern.test(phone)) {
+      setPhoneError(
+        "Пожалуйста, введите полный номер телефона в формате +7 (999) 999-99-99"
+      );
+      return;
+    }
+
+    if (name.trim() === "") {
+      setPhoneError("Имя не может быть пустым");
+      return;
+    }
+
     const newEmployee = {
       id: employeeId || Date.now(),
       name,
@@ -75,6 +77,32 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ employeeId }) => {
     navigate("/");
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(e.target.value);
+    setPhoneError("");
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const trimmedValue = inputValue.replace(/^\s+/, "");
+    if (/^[A-Za-zА-Яа-я\s]*$/.test(trimmedValue)) {
+      setName(trimmedValue);
+      setNameError("");
+    } else {
+      setNameError("Пожалуйста, используйте только буквы");
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === " ") {
+      // Блокируем пробел, если он первый символ
+      const currentValue = e.currentTarget.value;
+      if (currentValue.length === 0) {
+        e.preventDefault();
+      }
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <fieldset className={styles.fieldset}>
@@ -85,20 +113,22 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ employeeId }) => {
             id="name"
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleNameChange}
+            onKeyDown={handleKeyDown}
             required
           />
+          {nameError && <p className={styles.error}>{nameError}</p>}
         </div>
         <div className={styles.field}>
           <label htmlFor="phone">Телефон:</label>
-          <input
+          <InputMask
             id="phone"
-            type="text"
+            mask="+7 (999) 999-99-99"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handlePhoneChange}
             required
-            placeholder="+7 (999) 999-99-99"
           />
+          {phoneError && <p className={styles.error}>{phoneError}</p>}
         </div>
         <div className={styles.field}>
           <label htmlFor="birthdate">Дата рождения:</label>

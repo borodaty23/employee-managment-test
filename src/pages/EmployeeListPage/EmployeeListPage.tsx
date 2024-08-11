@@ -5,8 +5,8 @@ import {
   selectFilteredEmployees,
   setFilteredEmployees,
 } from "@/entities/employee/model/employeeSlice";
-import EmployeeList from "@/features/EmployeeList/EmployeeList";
-import FilterForm from "@/features/FilterForm/FilterForm";
+import EmployeeList from "@/features/EmployeeList";
+import FilterForm from "@/features/FilterForm";
 import styles from "./EmployeeListPage.module.scss";
 import employeesData from "@/employees.json";
 import { selectEmployeeState } from "@/entities/employee/model/selectors";

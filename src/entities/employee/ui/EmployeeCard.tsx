@@ -8,10 +8,16 @@ interface EmployeeCardProps {
 }
 
 const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee }) => {
+  const roleTranslations: { [key: string]: string } = {
+    cook: "Повар",
+    waiter: "Официант",
+    driver: "Водитель",
+  };
+
   return (
     <div className={styles.card}>
       <h3>{employee.name}</h3>
-      <p>{employee.role}</p>
+      <p>{roleTranslations[employee.role]}</p>
       <p>{employee.phone}</p>
       <Link to={`/edit/${employee.id}`}>Редактировать</Link>
     </div>

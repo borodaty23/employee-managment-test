@@ -28,8 +28,8 @@ const initialState: EmployeeState = {
   filter: {
     role: "",
     isArchive: false,
-    sortType: "name", // Добавляем значение по умолчанию
-    sortOrder: "asc", // Добавляем значение по умолчанию
+    sortType: "name",
+    sortOrder: "asc",
   },
 };
 
@@ -94,7 +94,6 @@ export const selectFilteredEmployees = (
   });
 };
 
-// Функция для преобразования строки в дату
 function parseDate(dateString: string): Date {
   const [day, month, year] = dateString.split(".").map(Number);
   return new Date(year, month - 1, day);
