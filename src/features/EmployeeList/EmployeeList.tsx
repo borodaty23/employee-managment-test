@@ -1,47 +1,49 @@
-import React, { useState } from "react";
-import { Employee } from "@/entities/employee/model/employeeSlice";
+import { Employee, setFilter } from "@/entities/employee/model/employeeSlice";
 import EmployeeCard from "@/entities/employee/ui/EmployeeCard";
 import styles from "./EmployeeList.module.scss";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectEmployeeState } from "@/entities/employee/model/selectors";
 
 interface EmployeeListProps {
   employees: Employee[];
 }
 
-const EmployeeList: React.FC<EmployeeListProps> = ({ employees }) => {
-  const navigate = useNavigate();
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
+const EmployeeList = ({ employees }: EmployeeListProps) => {
+  const {
+    filter: { perPage = 5, currentPage = 1 },
+  } = useSelector(selectEmployeeState);
 
-  const totalPages = Math.ceil(employees.length / itemsPerPage);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const totalPages = Math.ceil(employees.length / perPage);
 
   const getCurrentPageEmployees = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
+    const startIndex = (currentPage - 1) * perPage;
+    const endIndex = startIndex + perPage;
     return employees.slice(startIndex, endIndex);
   };
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      dispatch(setFilter({ currentPage: currentPage - 1 }));
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+      dispatch(setFilter({ currentPage: currentPage + 1 }));
     }
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    dispatch(setFilter({ currentPage: page }));
   };
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1);
+    dispatch(setFilter({ currentPage: 1, perPage: Number(e.target.value) }));
   };
 
   const getPageNumbers = () => {
@@ -103,7 +105,7 @@ const EmployeeList: React.FC<EmployeeListProps> = ({ employees }) => {
           <label htmlFor="itemsPerPage">Элементов на странице:</label>
           <select
             id="itemsPerPage"
-            value={itemsPerPage}
+            value={perPage}
             onChange={handleItemsPerPageChange}
             className={styles.select}
           >

@@ -14,6 +14,8 @@ interface Filter {
   isArchive?: boolean;
   sortType?: "name" | "birthday";
   sortOrder?: "asc" | "desc";
+  currentPage?: number;
+  perPage?: number;
 }
 
 export interface EmployeeState {
@@ -30,6 +32,8 @@ const initialState: EmployeeState = {
     isArchive: false,
     sortType: "name",
     sortOrder: "asc",
+    currentPage: 1,
+    perPage: 5,
   },
 };
 
