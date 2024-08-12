@@ -1,50 +1,19 @@
-# React + TypeScript + Vite
+##### Описание
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Просмотр и редактирование данных сотрудников компании.
 
-Currently, two official plugins are available:
+- При открытии приложения мы видем список сотрудников и форму для их фильтрации
+- У каждого из сотрудников в списке отображатся его имя, должность и номер телефона.
+- Существует возможность сортировки списка сотрудников по имени и дате рождения.
+- Существует возможность фильтровать сотрудников по их должности и их статусу. Должность - выпадающий список, содержащий (Повар, Официант, Водитель). Статус - чекбокс с лейблом "в архиве".
+- При нажатии в карточке сотрудника на кнопку "редактировать" появдяется страница с формой редактирования данных сотрудника.
+- При нажатии на кнопку "Добавить сотрудника" появляется страница с формой для  добавления новго сотрудника.
+- Так же в списке сотрудников присутсвует пагинация и возможность изменения количества элементов на странице, выбирается из выпадающего списка.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Установка и запуск
+- `npm install` для установки пакетов
+- `npm run dev` для запуска
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+##### Технологии
+- В данном проекте использовались React, TypeScript, Redux, SCSS, react-router
+- В качестве архитектурной методологии использовал FSD.
